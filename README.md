@@ -1,42 +1,44 @@
 # IRCTC-Demo-
 Project Setup and API Documentation
-Project Setup
-Clone the Repository
 
-bash
-Copy code
+# Clone the Repository
+
+```bash
 git clone https://github.com/yourusername/your-repo-name.git
 cd your-repo-name
-Install Dependencies
+```
+# Install Dependencies
 
 Ensure you have Node.js installed. Install the required npm packages:
 
-bash
-Copy code
+
+```bash
 npm install
+```
 Set Up Environment Variables
 
 Create a .env file in the root directory and add the following environment variables:
 
-env
-Copy code
+.env
+```bash
 API_KEY=your-secure-api-key-here
-You may also need to configure database connection strings and other environment variables as required by your application.
+
+```
 
 Run Migrations
 
 If your project uses Sequelize, run the migrations to set up the database schema:
 
-bash
-Copy code
+```bash
 npx sequelize-cli db:migrate
+```
 Start the Server
 
 Start the application:
 
-bash
-Copy code
-npm start
+```bash
+npm app.js
+```
 The server will be running at http://localhost:3000.
 
 API Endpoints
@@ -49,34 +51,42 @@ Method: POST
 Request Body:
 
 json
-Copy code
+```bash
 {
   "username": "newuser",
-  "password": "yourpassword"
+  "password": "yourpassword",
+  "role": "user/admin"
 }
-Response:
-
-json
-Copy code
-{
-  "id": 1,
-  "username": "newuser",
-  "token": "your-auth-token"
-}
-Postman:
+```
 
 Set method to POST.
 Enter URL: http://localhost:3000/auth/register.
 Go to the Body tab, select raw, and choose JSON format.
 Enter the request body as shown above.
 Click Send.
+
+Response:
+json
+```bash
+{
+  "id": 1,
+  "username": "newuser",
+  "password": "yourpassword",
+  "role": "user/admin",
+  "updatedAt": 2024-08-31T17:10:28.228Z",
+  "createdAt": 2024-08-31T17:10:28.228Z
+}
+```
+Postman:
+
+
 cURL:
 
-bash
-Copy code
+```bash
 curl -X POST http://localhost:3000/auth/register \
      -H "Content-Type: application/json" \
      -d '{"username": "newuser", "password": "yourpassword"}'
+```
 Login User
 URL: http://localhost:3000/auth/login
 
@@ -85,47 +95,63 @@ Method: POST
 Request Body:
 
 json
-Copy code
+```bash
 {
   "username": "existinguser",
   "password": "yourpassword"
-}
-Response:
 
-json
-Copy code
-{
-  "id": 1,
-  "username": "existinguser",
-  "token": "your-auth-token"
 }
-Postman:
-
+```
 Set method to POST.
 Enter URL: http://localhost:3000/auth/login.
 Go to the Body tab, select raw, and choose JSON format.
 Enter the request body as shown above.
 Click Send.
+
+Response:
+
+json
+```bash
+{
+  "id": 1,
+  "username": "existinguser",
+  "password": "yourpassword",
+  "role": "user/admin",
+  "updatedAt": 2024-08-31T17:10:28.228Z",
+  "createdAt": 2024-08-31T17:10:28.228Z,
+  "token": "your-auth-token"
+}
+```
+
 cURL:
 
-bash
-Copy code
+
+```bash
 curl -X POST http://localhost:3000/auth/login \
      -H "Content-Type: application/json" \
      -d '{"username": "existinguser", "password": "yourpassword"}'
+```
 2. Train Management
 Add Train (Admin Only)
 URL: http://localhost:3000/trains/add
 
 Method: POST
-
+Set method to POST.
+Enter URL: http://localhost:3000/trains/add.
+Go to the Headers tab, and add Authorization with the value Bearer <user-auth-token> you recieved while logging in your response body.
+Go to the Headers tab, and add x-api-key with your API key.
+Go to the Body tab, select raw, and choose JSON format.
+Enter the request body as shown above.
+Click Send.
 Headers:
-
+Authorization: Bearer <user-auth-token>
+       &&
 x-api-key: your-secure-api-key-here
+
 Request Body:
 
 json
-Copy code
+```bash
 {
   "name": "Express Train",
   "source": "City A",
@@ -133,35 +159,33 @@ Copy code
   "total_seats": 300,
   "available_seats": 300
 }
+```
 Response:
 
 json
-Copy code
+```bash
 {
   "id": 1,
   "name": "Express Train",
   "source": "City A",
   "destination": "City B",
   "total_seats": 300,
-  "available_seats": 300
+  "available_seats": 30
 }
-Postman:
+```
 
-Set method to POST.
-Enter URL: http://localhost:3000/trains/add.
-Go to the Headers tab, and add x-api-key with your API key.
-Go to the Body tab, select raw, and choose JSON format.
-Enter the request body as shown above.
-Click Send.
+
 cURL:
 
 bash
-Copy code
+```bash
 curl -X POST http://localhost:3000/trains/add \
      -H "Content-Type: application/json" \
+     -H "Authorization: Bearer <user-auth-token>" \
      -H "x-api-key: your-secure-api-key-here" \
      -d '{"name": "Express Train", "source": "City A", "destination": "City B", "total_seats": 300, "available_seats": 300}'
-Get Train Availability
+```
+# Get Train Availability
 URL: http://localhost:3000/trains/availability
 
 Method: GET
@@ -170,10 +194,19 @@ Query Parameters:
 
 source: The starting location of the train.
 destination: The destination location of the train.
+Postman:
+
+Set method to GET.
+URL
+```bash
+http://localhost:3000/trains/availability?source=CityA&destination=CityB.
+```
+Click Send.
+
 Response:
 
 json
-Copy code
+```bash
 [
   {
     "id": 1,
@@ -181,19 +214,17 @@ Copy code
     "source": "City A",
     "destination": "City B",
     "total_seats": 300,
-    "available_seats": 300
+    "available_seats": 30
   }
 ]
-Postman:
+```
 
-Set method to GET.
-Enter URL: http://localhost:3000/trains/availability?source=CityA&destination=CityB.
-Click Send.
 cURL:
 
 bash
-Copy code
+```bash
 curl -X GET "http://localhost:3000/trains/availability?source=CityA&destination=CityB"
+```
 3. Booking Management
 Book a Seat
 URL: http://localhost:3000/bookings/book
