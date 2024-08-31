@@ -15,7 +15,7 @@ Ensure you have Node.js installed. Install the required npm packages:
 ```bash
 npm install
 ```
-Set Up Environment Variables
+# Set Up Environment Variables
 
 Create a .env file in the root directory and add the following environment variables:
 
@@ -25,25 +25,24 @@ API_KEY=your-secure-api-key-here
 
 ```
 
-Run Migrations
+# Run Migrations
 
 If your project uses Sequelize, run the migrations to set up the database schema:
 
 ```bash
 npx sequelize-cli db:migrate
 ```
-Start the Server
+# Start the Server
 
-Start the application:
 
 ```bash
 npm app.js
 ```
 The server will be running at http://localhost:3000.
 
-API Endpoints
-1. User Authentication
-Register User
+### API Endpoints
+#  User Authentication
+# Register User
 URL: http://localhost:3000/auth/register
 
 Method: POST
@@ -87,7 +86,7 @@ curl -X POST http://localhost:3000/auth/register \
      -H "Content-Type: application/json" \
      -d '{"username": "newuser", "password": "yourpassword"}'
 ```
-Login User
+# Login User
 URL: http://localhost:3000/auth/login
 
 Method: POST
@@ -131,15 +130,15 @@ curl -X POST http://localhost:3000/auth/login \
      -H "Content-Type: application/json" \
      -d '{"username": "existinguser", "password": "yourpassword"}'
 ```
-2. Train Management
-Add Train (Admin Only)
+# Train Management
+# Add Train (Admin Only)
 URL: http://localhost:3000/trains/add
 
 Method: POST
 Set method to POST.
 Enter URL: http://localhost:3000/trains/add.
 Go to the Headers tab, and add Authorization with the value Bearer <user-auth-token> you recieved while logging in your response body.
-Go to the Headers tab, and add x-api-key with your API key.
+Go to the Headers tab, and add x-api-key with your Admin_API key.
 Go to the Body tab, select raw, and choose JSON format.
 Enter the request body as shown above.
 Click Send.
@@ -225,34 +224,8 @@ bash
 ```bash
 curl -X GET "http://localhost:3000/trains/availability?source=CityA&destination=CityB"
 ```
-3. Booking Management
-Book a Seat
-URL: http://localhost:3000/bookings/book
-
-Method: POST
-
-Headers:
-
-Authorization: Bearer <user-auth-token>
-Request Body:
-
-json
-Copy code
-{
-  "trainId": 1,
-  "numberOfSeats": 2
-}
-Response:
-
-json
-Copy code
-{
-  "id": 1,
-  "train_id": 1,
-  "user_id": 1,
-  "seats_booked": 2,
-  "booking_time": "2024-08-31T00:00:00.000Z"
-}
+# Booking Management
+# Book a Seat
 Postman:
 
 Set method to POST.
@@ -261,16 +234,60 @@ Go to the Headers tab, and add Authorization with the value Bearer <user-auth-to
 Go to the Body tab, select raw, and choose JSON format.
 Enter the request body as shown above.
 Click Send.
+
+
+Method: POST
+
+Headers:
+
+Authorization: Bearer <user-auth-token>
+
+URL
+```bash
+http://localhost:3000/bookings/book
+```
+Request Body :
+
+json
+```bash
+{
+  "trainId": 1,
+  "numberOfSeats": 2
+}
+```
+Response:
+
+json
+```bash
+{
+  "id": 1,
+  "train_id": 1,
+  "user_id": 1,
+  "seats_booked": 2,
+  "booking_time": "2024-08-31T00:00:00.000Z"
+}
+```
+
 cURL:
 
 bash
-Copy code
+```bash
 curl -X POST http://localhost:3000/bookings/book \
      -H "Content-Type: application/json" \
      -H "Authorization: Bearer <user-auth-token>" \
      -d '{"trainId": 1, "numberOfSeats": 2}'
-Get Booking Details
-URL: http://localhost:3000/bookings/:id
+```
+# Get Booking Details
+Postman:
+
+Set method to GET.
+Enter URL: http://localhost:3000/bookings/1 (replace 1 with the actual booking ID).
+Go to the Headers tab, and add Authorization with the value Bearer <user-auth-token>.
+Click Send.
+URL
+```bash
+http://localhost:3000/bookings/:id
+```
 
 Method: GET
 
@@ -280,7 +297,7 @@ Authorization: Bearer <user-auth-token>
 Response:
 
 json
-Copy code
+```bash
 {
   "id": 1,
   "train_id": 1,
@@ -288,19 +305,15 @@ Copy code
   "seats_booked": 2,
   "booking_time": "2024-08-31T00:00:00.000Z"
 }
-Postman:
-
-Set method to GET.
-Enter URL: http://localhost:3000/bookings/1 (replace 1 with the actual booking ID).
-Go to the Headers tab, and add Authorization with the value Bearer <user-auth-token>.
-Click Send.
+```
 cURL:
 
 bash
-Copy code
+```bash
 curl -X GET http://localhost:3000/bookings/1 \
      -H "Authorization: Bearer <user-auth-token>"
-Authorization
+```
+### Authorization
 1. Admin API Key
 For admin endpoints like /trains/add, include the x-api-key header with the value set to your secure API key.
 
