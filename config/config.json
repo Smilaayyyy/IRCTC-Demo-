@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "root",
+    "password": "new_password",
+    "database": "railway_management",
+    "host": "localhost",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "root",
+    "password": "new_password",
+    "database": "railway_management",
+    "host": "localhost",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "root",
+    "password": "new_password",
+    "database": "railway_management",
+    "host": "localhost",
+    "dialect": "mysql"
+  }
+}
